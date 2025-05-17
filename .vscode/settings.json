@@ -1,0 +1,10 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "files.associations": {
+    "*.env*": "env"
+  },
+  "workbench.tree.indent": 15
+}
