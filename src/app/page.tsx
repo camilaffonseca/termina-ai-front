@@ -3,5 +3,5 @@ export default function Home() {
     <div>
       <div>oi</div>
     </div>
-  );
+  )
 }
