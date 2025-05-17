@@ -1,4 +1,5 @@
 import { ChakraProvider } from '@/components/ui/provider'
+import { MainSocketServiceContextProvider } from '@/contexts/MainSocketServiceContext'
 import type { Metadata } from 'next'
 import { Geist_Mono } from 'next/font/google'
 
@@ -20,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang='pt-BR'>
       <body className={`${geistMono.variable}`}>
-        <ChakraProvider>{children}</ChakraProvider>
+        <ChakraProvider>
+          <MainSocketServiceContextProvider>{children}</MainSocketServiceContextProvider>
+        </ChakraProvider>
       </body>
     </html>
   )
