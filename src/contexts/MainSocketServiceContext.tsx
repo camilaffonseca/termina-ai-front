@@ -27,7 +27,8 @@ const MainSocketServiceContextProvider = ({
   useEffect(() => {
     function onConnect() {
       socket.emit('join', {
-        oi: 'olá',
+        token:
+          'eyJhbGciOiJIUzI1NiJ9.eyJzZXNzaW9uSWQiOiJlOWMwNTYwMy0yMGM3LTRhNWItOGQ5NS1hYzI1MTAyOGQ1OTMiLCJ0b2tlbiI6ImVlcnZqb2llcm9wNTRvIiwibmlja25hbWUiOiJqdWxpZXJhIiwidGVybWluYXRpb25JZCI6MjF9.67XDdz01gItHlmP6u80N0OSzmfzOHsl7jESqUIwwgOY',
       })
 
       setIsConnected(true)
