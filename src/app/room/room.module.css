@@ -1,7 +1,7 @@
 .character1 {
-  width: 256px;               
-  height: 256px;               
-  background-image: url('/character2.png'); 
+  width: 256px;
+  height: 256px;
+  background-image: url('/character2.png');
   background-repeat: no-repeat;
   /* background-position: 0 0; */
   animation: play 1s steps(4) infinite;
@@ -10,7 +10,7 @@
   /* display: block; */
   /* outline: 2px solid lime; */
 }
-  
+
 @keyframes play {
   from {
     background-position: 0;

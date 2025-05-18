@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Geist_Mono } from 'next/font/google'
 
 import './global.css'
+import { Toaster } from '@/components/ui/toaster'
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
@@ -24,7 +25,11 @@ export default function RootLayout({
     <html lang='pt-BR' suppressHydrationWarning>
       <body className={`${geistMono.variable}`}>
         <ChakraProvider>
-          <MainSocketServiceContextProvider>{children}</MainSocketServiceContextProvider>
+          <MainSocketServiceContextProvider>
+            {children}
+
+            <Toaster />
+          </MainSocketServiceContextProvider>
         </ChakraProvider>
       </body>
     </html>

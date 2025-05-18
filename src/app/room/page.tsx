@@ -1,4 +1,4 @@
-import { Box, Center, Container, Flex, Grid, GridItem } from '@chakra-ui/react'
+import { Box, Center, Flex, Grid } from '@chakra-ui/react'
 
 import styles from './room.module.css'
 import Image from 'next/image'

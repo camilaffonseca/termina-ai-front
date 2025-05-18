@@ -9,44 +9,91 @@ import {
   Button,
   Flex,
   Card,
+  Spinner,
 } from '@chakra-ui/react'
 
 import { useForm } from 'react-hook-form'
 
-import style from './home.module.css'
+import style from './join.module.css'
 import { httpClient } from '@/services/http'
 import { toaster } from '@/components/ui/toaster'
 import { getToastRemoteMessageFromAxiosErr } from '@/utils/toast-utils'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
+import { MainSocketServiceContextContext } from '@/contexts/MainSocketServiceContext'
+import { useEffect, useState } from 'react'
 
 type FormType = {
-  nameTerminator: string
-  phoneTerminator: string
-  nameTerminated: string
-  phoneTerminated: string
+  nickname: string
 }
 
-// TODO! add validação do form e tratativa de erro no catch, toast?
-// TODO! gravar o cookie e levar p sala, disparar o join, loader?
+export default function Join() {
+  const [isLoading, setIsLoading] = useState(false)
 
-export default function Home() {
   const { register, handleSubmit, formState } = useForm<FormType>()
 
   const router = useRouter()
 
-  const onSubmit = async (formValues: FormType) => {
-    try {
-      await httpClient.post('/register/start-termination', formValues)
+  const dispatchSession = MainSocketServiceContextContext.useSelector(
+    state => state.dispatchSession
+  )
 
-      router.replace('/chatbot-requested')
+  const { roomToken } = useParams()
+
+  const onSubmit = async (formValues: FormType) => {
+    if (!formValues.nickname?.trim?.()) {
+      toaster.error({
+        title: 'O meu, faltou coisa',
+        description: 'Coloque o seu nickname!',
+      })
+
+      return
+    }
+
+    try {
+      setIsLoading(true)
+
+      const { data } = await httpClient.post<{ token: string }>(
+        '/sessions/create-session',
+        { ...formValues, token: roomToken }
+      )
+
+      if (!data.token) {
+        throw new Error()
+      }
+
+      dispatchSession(data.token)
+
+      router.replace('/room')
     } catch (err) {
       toaster.error({
         title: 'Oops',
         description:
           getToastRemoteMessageFromAxiosErr(err) ||
-          'Ocorreu um erro desconhecido. Verifique se você preencheu os dados corretamente e tente novamente!',
+          'Ocorreu um erro desconhecido. Preencha o nickname e tente novamente!',
       })
+
+      setIsLoading(false)
     }
+  }
+
+  useEffect(() => {
+    if (!roomToken) {
+      router.replace('/')
+    }
+  }, [roomToken, router])
+
+  if (isLoading || !roomToken) {
+    return (
+      <Container w='100vw' h='100vh' className={style.bg} maxWidth='unset'>
+        <Center flexDirection='column'>
+          <Spinner size='lg' />
+
+          <Text fontSize='1.2rem' textAlign='center' mt='2.4rem'>
+            Estamos preparando tudo para você...
+          </Text>
+        </Center>
+      </Container>
+    )
   }
 
   return (
@@ -57,7 +104,7 @@ export default function Home() {
           textAlign='center'
           textShadow='4px 4px rgba(255, 242, 0, 0.5)'
         >
-          Olá, ex-terminador!
+          Escolha seu nome público
         </Text>
       </Center>
 
@@ -72,44 +119,13 @@ export default function Home() {
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
               <Flex flexDirection='column' gap='1.2rem'>
                 <Field.Root>
-                  <Field.Label fontSize='1.1rem'>Seu nome</Field.Label>
+                  <Field.Label fontSize='1.1rem'>
+                    Como quer ser chamado na sala?
+                  </Field.Label>
                   <Input
                     fontSize='1rem'
                     type='text'
-                    {...register('nameTerminator')}
-                    disabled={formState.isSubmitting}
-                  />
-                  <Field.HelperText />
-                  <Field.ErrorText />
-                </Field.Root>
-                <Field.Root>
-                  <Field.Label fontSize='1.1rem'>Seu WhatsApp</Field.Label>
-                  <Input
-                    fontSize='1rem'
-                    type='tel'
-                    {...register('phoneTerminator')}
-                    disabled={formState.isSubmitting}
-                  />
-                  <Field.HelperText />
-                  <Field.ErrorText />
-                </Field.Root>
-                <Field.Root>
-                  <Field.Label fontSize='1.1rem'>Noma da vítima</Field.Label>
-                  <Input
-                    fontSize='1rem'
-                    type='text'
-                    {...register('nameTerminated')}
-                    disabled={formState.isSubmitting}
-                  />
-                  <Field.HelperText />
-                  <Field.ErrorText />
-                </Field.Root>
-                <Field.Root>
-                  <Field.Label fontSize='1.1rem'>Telefone da vítima</Field.Label>
-                  <Input
-                    fontSize='1rem'
-                    type='tel'
-                    {...register('phoneTerminated')}
+                    {...register('nickname')}
                     disabled={formState.isSubmitting}
                   />
                   <Field.HelperText />
