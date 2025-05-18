@@ -53,13 +53,19 @@ const MainSocketServiceContextProvider = ({
 
     const payload = decodeJWTPayload(fromLocal)
 
-    setCurrentUser(payload)
+    const currentUser = currentRoom?.roomUsers.find(
+      u => u.sessionId === payload.sessionId
+    )
+
+    if (currentUser) {
+      setCurrentUser(currentUser)
+    }
 
     return {
       token: fromLocal,
       payload,
     }
-  }, [])
+  }, [currentRoom?.roomUsers])
 
   const dispatchSession = useCallback((token: string) => {
     localStorage.setItem('token', token)
