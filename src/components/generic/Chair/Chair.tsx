@@ -8,7 +8,6 @@ export default function Chair({ id }: { id: string }) {
         <Image fill src='/2.png' alt='chair' />
         <Flex w='100%' justifyContent='center' position='absolute' top='18px' p='2px'>
           <Text
-            fontFamily='monospace'
             fontWeight='600'
             backgroundColor='#684716'
             color='#301e03'
