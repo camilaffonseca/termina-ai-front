@@ -1,0 +1,22 @@
+.bg {               
+    background-image: url('/initialbg.png'); 
+    background-repeat: no-repeat;
+    /* background-position: 0 0; */
+    animation: play 80s infinite;
+    /* image-rendering: pixelated; */
+    background-size: auto;
+    /* display: block; */
+    /* outline: 2px solid lime; */
+  }
+    
+  @keyframes play {
+    0% {
+      background-position: left;
+    }
+    50% {
+      background-position: right;
+    }
+    100% {
+      background-position: left;
+    }
+  }
