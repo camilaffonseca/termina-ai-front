@@ -26,7 +26,7 @@ const MainSocketServiceContextProvider = ({
 
   useEffect(() => {
     function onConnect() {
-      socket.emit('teste', {
+      socket.emit('join', {
         oi: 'olá',
       })
 
@@ -37,8 +37,8 @@ const MainSocketServiceContextProvider = ({
       setIsConnected(false)
     }
 
-    socket.on('teste2', d => {
-      console.log('deu certo!', d)
+    socket.on('sync', d => {
+      console.log('mensagem recebida no front', d)
     })
 
     socket.on('connect', onConnect)
