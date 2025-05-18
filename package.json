@@ -1,7 +1,9 @@
 {
   "name": "termina-ai-front",
   "version": "0.1.0",
+  "description": "TerminaAi frontend.",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "prepare": "sh scripts/setup/prepare.sh",
     "dev": "next dev --turbopack",
