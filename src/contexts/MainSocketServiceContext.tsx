@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
@@ -120,6 +121,16 @@ const MainSocketServiceContextProvider = ({
       setCurrentRoom(room)
     }
     function onKnownError(err: unknown) {
+      if ((err as any).errorCode === 'USER_NOT_FOUND') {
+        setIsLogged(false)
+        setCurrentUser(null)
+        setCurrentRoom(null)
+
+        router.replace('/')
+
+        return
+      }
+
       toaster.error({
         title: 'Oops',
         description:

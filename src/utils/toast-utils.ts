@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosError } from 'axios'
 
 export const ErrorCodes = {
@@ -24,7 +25,9 @@ const ErrorCodesEntries = Object.entries(ErrorCodes)
 export const getToastRemoteMessageFromAxiosErr = (baseerr: unknown) => {
   const err = baseerr as AxiosError<{ errorCode?: string }>
 
-  const result = ErrorCodesEntries.find(([k]) => k === err.response?.data?.errorCode)
+  const result = ErrorCodesEntries.find(
+    ([k]) => k === err.response?.data?.errorCode || (err as any)?.errorCode
+  )
 
   if (!result) {
     return null
