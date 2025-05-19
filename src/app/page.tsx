@@ -38,7 +38,7 @@ export default function Home() {
     try {
       await httpClient.post('/register/start-termination', formValues)
 
-      router.replace('/chatbot-requested')
+      router.replace('/join/teste')
     } catch (err) {
       toaster.error({
         title: 'Oops',

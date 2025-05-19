@@ -1,10 +1,48 @@
-import { Box, Center, Flex, Grid } from '@chakra-ui/react'
+'use client'
+
+import { Box, Center, Container, Flex, Grid, Spinner, Text } from '@chakra-ui/react'
 
 import styles from './room.module.css'
 import Image from 'next/image'
 import Chair from '@/components/generic/Chair'
+import { MainSocketServiceContextContext } from '@/contexts/MainSocketServiceContext'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Room() {
+  const isLogged = MainSocketServiceContextContext.useSelector(state => state.isLogged)
+  const currentRoom = MainSocketServiceContextContext.useSelector(
+    state => state.currentRoom
+  )
+
+  const router = useRouter()
+
+  const getUserByChair = (chairPosition: number) => {
+    const user = currentRoom?.roomUsers.find(u => u.chairPosition === chairPosition)
+
+    return user || null
+  }
+
+  useEffect(() => {
+    if (!isLogged) {
+      router.replace('/')
+    }
+  }, [isLogged, router])
+
+  if (!isLogged) {
+    return (
+      <Container w='100vw' h='100vh' className={styles.bg} maxWidth='unset'>
+        <Center flexDirection='column'>
+          <Spinner size='lg' />
+
+          <Text fontSize='1.2rem' textAlign='center' mt='2.4rem'>
+            Estamos preparando tudo para você...
+          </Text>
+        </Center>
+      </Container>
+    )
+  }
+
   return (
     <Flex w='100%' h='100vh' justify='center' direction='column' backgroundColor='black'>
       <Center h='60%' backgroundImage='url(/wall.png)' position='relative'>
@@ -26,9 +64,6 @@ export default function Room() {
         <Box w='70%' h='44%' mt='-14'>
           <Box position='relative' w='100%' h='100%'>
             <Image fill src='/1.png' alt='stage' />
-            <Flex w='100%' justify='space-between' position='absolute' bottom='90px'>
-              <Box width='256px' height='256px' className={styles.character1}></Box>
-            </Flex>
           </Box>
         </Box>
         <Grid
@@ -39,12 +74,12 @@ export default function Room() {
           gap='10'
           gridTemplateColumns='1fr 1fr 1fr 1fr 1fr 1fr'
         >
-          <Chair id='F347' />
-          <Chair id='F348' />
-          <Chair id='F349' />
-          <Chair id='F350' />
-          <Chair id='F351' />
-          <Chair id='F352' />
+          <Chair id='F347' user={getUserByChair(0)} />
+          <Chair id='F348' user={getUserByChair(1)} />
+          <Chair id='F349' user={getUserByChair(2)} />
+          <Chair id='F350' user={getUserByChair(3)} />
+          <Chair id='F351' user={getUserByChair(4)} />
+          <Chair id='F352' user={getUserByChair(5)} />
         </Grid>
         <Grid
           zIndex='1'
@@ -54,11 +89,11 @@ export default function Room() {
           gap='10'
           gridTemplateColumns='1fr 1fr 1fr 1fr 1fr'
         >
-          <Chair id='G402' />
-          <Chair id='G403' />
-          <Chair id='G404' />
-          <Chair id='G405' />
-          <Chair id='G406' />
+          <Chair id='G402' user={getUserByChair(6)} />
+          <Chair id='G403' user={getUserByChair(7)} />
+          <Chair id='G404' user={getUserByChair(8)} />
+          <Chair id='G405' user={getUserByChair(9)} />
+          <Chair id='G406' user={getUserByChair(10)} />
         </Grid>
         <Grid
           zIndex='1'
@@ -68,10 +103,10 @@ export default function Room() {
           gap='10'
           gridTemplateColumns='1fr 1fr 1fr 1fr'
         >
-          <Chair id='H461' />
-          <Chair id='H462' />
-          <Chair id='H463' />
-          <Chair id='H464' />
+          <Chair id='H461' user={getUserByChair(11)} />
+          <Chair id='H462' user={getUserByChair(12)} />
+          <Chair id='H463' user={getUserByChair(13)} />
+          <Chair id='H464' user={getUserByChair(14)} />
         </Grid>
       </Flex>
     </Flex>

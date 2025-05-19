@@ -1,21 +1,26 @@
-.character1 {
-  width: 256px;
-  height: 256px;
-  background-image: url('/character2.png');
+.bg {
+  background-image: url('/initialbg.png');
   background-repeat: no-repeat;
   /* background-position: 0 0; */
-  animation: play 1s steps(4) infinite;
+  animation: play2 80s infinite;
   /* image-rendering: pixelated; */
   background-size: auto;
   /* display: block; */
   /* outline: 2px solid lime; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-@keyframes play {
-  from {
-    background-position: 0;
+@keyframes play2 {
+  0% {
+    background-position: left;
   }
-  to {
-    background-position: -1024px;
+  50% {
+    background-position: right;
+  }
+  100% {
+    background-position: left;
   }
 }
